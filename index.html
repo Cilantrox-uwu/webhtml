@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elige tu idioma</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        button, input[type="password"], input[type="text"] {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #666;
+        }
+        #password-container, #question-container, #video-container {
+            display: none;
+            text-align: center;
+        }
+        iframe {
+            width: 640px;
+            height: 360px;
+            border: none;
+        }
+        #dont-click {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #444;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+        }
+        #dont-click:hover {
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Elige tu idioma / Choose your language</h1>
+    <button id="btn-es" onclick="selectLanguage('es')">Español</button>
+    <button id="btn-en" onclick="selectLanguage('en')">English</button>
+
+    <div id="dont-click" onclick="openLink()">Don't click here</div>
+
+    <div id="password-container">
+        <h1 id="password-title">Introduce la contraseña</h1>
+        <input type="password" id="password" placeholder="Contraseña">
+        <button onclick="checkPassword()">Entrar</button>
+    </div>
+
+    <div id="question-container">
+        <h1 id="security-question"></h1>
+        <input type="text" id="answer" placeholder="Tu respuesta">
+        <button onclick="checkAnswer()">Enviar</button>
+    </div>
+
+    <div id="video-container">
+        <iframe id="video" src="" allowfullscreen></iframe>
+    </div>
+
+    <script>
+        var selectedLanguage = '';
+
+        function selectLanguage(language) {
+            selectedLanguage = language;
+            document.querySelector('h1').style.display = 'none';
+            document.getElementById('btn-es').style.display = 'none';
+            document.getElementById('btn-en').style.display = 'none';
+            document.getElementById('password-container').style.display = 'block';
+            
+            if (selectedLanguage === 'en') {
+                document.getElementById('password-title').innerText = 'Enter the password';
+                document.querySelector('input[type="password"]').placeholder = 'Password';
+                document.querySelector('#password-container button').innerText = 'Enter';
+                document.querySelector('input[type="text"]').placeholder = 'Your answer';
+                document.querySelector('#question-container button').innerText = 'Submit';
+            }
+        }
+
+        function checkPassword() {
+            var password = document.getElementById('password').value;
+            if (password === '1902') {
+                document.getElementById('password-container').style.display = 'none';
+                var questionContainer = document.getElementById('question-container');
+                var securityQuestion = document.getElementById('security-question');
+
+                if (selectedLanguage === 'es') {
+                    securityQuestion.innerText = '¿Quién es el creador de Terracraft? (inserta su Instagram con el @)';
+                } else if (selectedLanguage === 'en') {
+                    securityQuestion.innerText = 'What was the last SMP that Cylan was a part of?';
+                }
+
+                questionContainer.style.display = 'block';
+            } else {
+                alert(selectedLanguage === 'es' ? 'Contraseña incorrecta' : 'Incorrect password');
+            }
+        }
+
+        function checkAnswer() {
+            var answer = document.getElementById('answer').value.toLowerCase();
+            var correctAnswersEs = ['reksa__l', 'terracraft_smp9']; // Respuestas correctas en español
+            var correctAnswersEn = ['tomatecraft', 'mundus smp']; // Respuestas correctas en inglés
+
+            if ((selectedLanguage === 'es' && correctAnswersEs.includes(answer)) ||
+                (selectedLanguage === 'en' && correctAnswersEn.includes(answer))) {
+                document.getElementById('question-container').style.display = 'none';
+                var videoContainer = document.getElementById('video-container');
+                var video = document.getElementById('video');
+
+                if (selectedLanguage === 'es') {
+                    video.src = 'https://www.youtube.com/embed/HJzaqiclbyE';
+                } else if (selectedLanguage === 'en') {
+                    video.src = 'https://www.youtube.com/embed/mHbBxJuPo-Y';
+                }
+
+                videoContainer.style.display = 'block';
+            } else {
+                alert(selectedLanguage === 'es' ? 'Respuesta incorrecta' : 'Incorrect answer');
+            }
+        }
+
+        function openLink() {
+            window.open('https://x.com/CylanSmp', '_blank');
+        }
+    </script>
+</body>
+</html>
